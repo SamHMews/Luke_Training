@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {DAYS,DAY_META,ROUTINES,initialState,validateState,previousResult,completeEntry,archiveWeek,weekComplete,missingExerciseFields,isBodyweightOnly,repRange,toCSV} from './dist/model.js';
+import {DAYS,DAY_META,ROUTINES,initialState,validateState,previousResult,previousSummary,completeEntry,archiveWeek,weekComplete,missingExerciseFields,isBodyweightOnly,repRange,toCSV} from './dist/model.js';
 import {progressData,displayPoints} from './dist/progress.js';
 const state=initialState();validateState(state);
 assert.equal(DAYS.length,9);assert.equal(Object.values(ROUTINES).flat().length,26);assert.equal(state.seed.length,33);
@@ -17,6 +17,17 @@ const mixed=state.seed.find(e=>e.date==='2026-11-16'&&e.id==='shoulder-db');asse
 assert.deepEqual(state.seed,JSON.parse(fs.readFileSync('dist/historical-results.json')).records);
 assert.throws(()=>validateState({...state,appId:'pplul'}),/Luke Training/);
 const seedBefore=JSON.stringify(state.seed);
+const historical=(date,id)=>state.seed.find(e=>e.date===date&&e.id===id);
+assert.equal(previousSummary(historical('2026-11-16','leg-press-full')),'140 kg × 97 reps');
+assert.equal(previousSummary(historical('2026-10-10','leg-press-pulses')),'200 kg × 40.8 reps');
+assert.equal(previousSummary(historical('2026-10-23','muscle-ups')),'Bodyweight × 7.9 reps');
+assert.equal(previousSummary(historical('2026-10-10','muscle-ups')),'Bodyweight × 5.6 reps');
+assert.equal(previousSummary(historical('2026-11-16','wide-pulldown')),'12 × 26 reps');
+assert.equal(previousSummary(historical('2026-11-16','lateral')),'Weight not logged × 47 reps');
+assert.equal(previousSummary(mixed),'25 kg × 8 reps · 20 kg × 26 reps');
+assert.equal(previousSummary({weight:50,reps:7,loadUnit:'lb',id:'bench'}),'50 lb × 7 reps');
+assert.equal(previousSummary({weight:50,reps:null,id:'bench'}),'50 kg');
+assert.equal(JSON.stringify(state.seed),seedBefore,'Averages never modify historical data');
 for(const day of DAYS){
  for(const e of state.active.days[day].entries){
   const previous=previousResult(state,day,e);assert(previous,`${day}/${e.id} has a historical reference`);assert.equal(previous.day,day);

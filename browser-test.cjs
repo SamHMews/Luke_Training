@@ -14,7 +14,7 @@ const pw=require(process.env.PLAYWRIGHT_PATH||'playwright');
  await page.locator('.is-front [data-action="done"]').click();assert.equal(await page.locator('.is-front .required-hint').count(),3);assert.equal(await page.locator('.is-front.is-complete').count(),0);
  await page.locator('.is-front [data-action="plus"]').click();await page.waitForFunction(()=>document.querySelector('.is-front .weight-value')?.textContent.includes('200'));
  await page.locator('.is-front [data-action="enter-reps"]').click();await page.fill('#typed-reps','43');await page.click('#save-reps');await page.locator('.is-front [data-effort="right"]').click();
- await page.locator('.is-front [data-action="done"]').click();await page.waitForSelector('.is-front.is-complete');assert.match(await page.locator('.is-front .previous').innerText(),/43 \/ 40 \/ 40 \/ 40/);
+ await page.locator('.is-front [data-action="done"]').click();await page.waitForSelector('.is-front.is-complete');assert.match(await page.locator('.is-front .previous').innerText(),/200 kg × 40\.8 reps/);
  // Explicit card navigation remains possible, completed cards stay in the deck.
  await page.click('[data-progress="leg-press-drop-2"]');await page.waitForSelector('.is-front[data-entry="leg-press-drop-2"]');assert.equal(await page.locator('.is-front .range').getAttribute('max'),'120');
  await page.reload();await page.waitForSelector('.is-front[data-entry="leg-press-drop-2"]');await page.click('[data-action="home"]');
@@ -31,7 +31,7 @@ const pw=require(process.env.PLAYWRIGHT_PATH||'playwright');
  }
  await page.waitForSelector('.plate-celebration');await page.waitForSelector('#app[data-page="home"]',{timeout:15000});assert.equal(await page.locator('[data-day="light-1"].complete').count(),1);
  await page.click('[data-action="new-week"]');await page.click('#confirm-action');await page.waitForFunction(()=>document.querySelector('.eyebrow')?.textContent.includes('Cycle 2'));assert.equal(await page.locator('.tile.complete').count(),0);
- await page.click('[data-day="light-1"]');assert.match(await page.locator('.is-front .previous').innerText(),/140 kg · 100 reps/);
+ await page.click('[data-day="light-1"]');assert.match(await page.locator('.is-front .previous').innerText(),/140 kg × 100 reps/);
  assert.deepEqual(errors,[]);await context.close();console.log('PASS iPhone layout, historical display, validation, high reps, persistence, card navigation, final plate animation, cycle reset');
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1});

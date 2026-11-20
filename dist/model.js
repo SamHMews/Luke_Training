@@ -18,6 +18,19 @@ export function weightText(e){return e.weight===null?(isBodyweightOnly(e)?'Bodyw
 export function repRange(e){const nums=e.target.match(/\d+/g)?.map(Number);if(!nums?.length)throw new Error('Missing rep target');const max=Math.max(10,Math.ceil(Math.max(...nums)*1.2/5)*5);const step=Math.ceil(max/6/5)*5;const values=[];for(let n=0;n<max;n+=step)values.push(n);values.push(max);return {min:0,max,values};}
 export function repInputValue(e){const {min,max}=repRange(e);return e.reps!==null?Math.min(max,Math.max(min,e.reps)):min;}
 export function historicalText(e){return e.recordedSets?e.recordedReps:[weightText(e),e.recordedReps?e.recordedReps+' reps':e.reps!=null?e.reps+' reps':null].filter(Boolean).join(' · ');}
+// Compact display only: retain every original set and note in the saved history.
+export function previousSummary(e){
+ const mean=values=>String(Math.round(values.reduce((sum,n)=>sum+n,0)/values.length*10)/10);
+ const format=(record,values)=>weightText(record)+(values.length?' × '+mean(values)+' reps':'');
+ if(Array.isArray(e.recordedSets)&&e.recordedSets.length){
+  // Different loads have separate averages; never invent a representative weight.
+  const groups=new Map();
+  for(const set of e.recordedSets){if(!Number.isFinite(set.reps))continue;const weight=set.weight??null;if(!groups.has(weight))groups.set(weight,[]);groups.get(weight).push(set.reps);}
+  if(groups.size)return [...groups].map(([weight,values])=>format({...e,weight},values)).join(' · ');
+ }
+ const values=typeof e.recordedReps==='string'?e.recordedReps.split('/').map(set=>/^\s*(\d+(?:\.\d+)?)/.exec(set)).filter(Boolean).map(match=>Number(match[1])):Number.isFinite(e.reps)?[e.reps]:[];
+ return format(e,values);
+}
 export function previousResult(state,day,entry){
  // The active week never participates, so saving or undoing this week's result cannot replace its reference.
  // Shared exercises can use another day's earlier result; seated and standing raises are distinct.
