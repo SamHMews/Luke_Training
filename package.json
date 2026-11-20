@@ -1,0 +1,13 @@
+{
+  "name": "luke-training",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node programme-test.mjs && node preservation-test.mjs && node spotify-regression.cjs",
+    "test:browser": "node browser-test.cjs"
+  },
+  "devDependencies": {"playwright": "1.62.1"}
+}
+
