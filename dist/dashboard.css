@@ -1,0 +1,248 @@
+/* Dashboard selectors deliberately exclude every exercise logging card and its controls. */
+:root{--footer-height:max(64px,4rem);--shell-safe-top:env(safe-area-inset-top,0px);--shell-safe-bottom:env(safe-area-inset-bottom,0px)}
+/* A solid viewport shell keeps scrolling content out of the status and home-indicator areas. */
+body:has(.app-footer){position:fixed;inset:auto 0;top:var(--shell-viewport-top,0px);height:var(--shell-viewport-height,100dvh);padding-top:var(--shell-safe-top);display:flex;flex-direction:column;overflow:hidden;background:#111116}
+body:has(.app-footer) #app{flex:1;min-height:0;height:auto;width:100%;margin:0 auto;overflow-y:auto;overscroll-behavior-y:contain;padding-bottom:16px}
+body>div:has(>.app-footer){flex:none}
+/* Opaque status bar + CSS viewport avoids the extra inset reported by iOS JS APIs. */
+html[data-standalone=true]:has(.app-footer){height:var(--shell-viewport-height,100dvh);overflow:hidden;background:#16151c}
+html[data-standalone=true] body:has(.app-footer){inset:0;height:var(--shell-viewport-height,100dvh)}
+.status-surface{display:none}
+html[data-standalone=true] body:has(.app-footer)>.status-surface{display:block;position:fixed;top:0;left:0;width:100%;height:max(8px,var(--shell-safe-top));background:#111116;z-index:30;pointer-events:none}
+body:has(.app-footer){background:#16151c}
+body:has(.app-footer) #app{background:#111116}
+
+.app-footer{position:relative;z-index:12;height:calc(var(--footer-height) + var(--shell-safe-bottom));padding:6px max(12px,calc((100% - 560px)/2));display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:center;background:#16151c;border-top:1px solid #ffffff0b}
+.app-footer button{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;min-height:52px;padding:4px;color:#a29aa9;border-radius:12px;font-size:0.6875rem;font-weight:550;letter-spacing:.02em;transition:color 200ms,background 200ms}
+.app-footer svg{width:21px;height:21px}.app-footer [aria-current=page]{color:#c1a2df;background:#a58ab80a}.app-footer button:active{background:#352a42}
+#app[data-page=home]{height:auto;min-height:0;max-width:560px;padding:18px 18px 16px;gap:14px}
+#app[data-page=home] .screen-heading{margin:0;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.screen-heading h1{font-size:clamp(1.6rem,6.5vw,2rem);font-weight:650;line-height:1.12;letter-spacing:-.035em;margin:0}
+.eyebrow{font-size:0.6875rem;line-height:1.3;letter-spacing:.06em;color:#a29aa9;margin:0 0 7px}
+.week-status{display:flex;align-items:center;gap:5px;white-space:nowrap;font-size:0.6875rem;color:#a29aa9}.week-status i{width:4px;height:4px;background:#ac91c4;border-radius:50%}.week-status.complete{color:#8fd3ac}.week-status.complete i{background:#8fd3ac}
+.week-completion{padding:11px 13px;border-radius:13px;background:#1a1920;border:1px solid #ffffff06}
+.week-completion>div:first-child{display:flex;align-items:center;justify-content:space-between;font-size:0.6875rem;color:#b0a7b9;margin-bottom:9px}.week-completion strong{font-size:1.125rem;font-weight:600;color:#e8e2ee}.week-completion small{font-size:0.6875rem;color:#aaa0b5}
+.week-segments{display:flex;gap:5px}.week-segments span{flex:1;height:4px;border-radius:2px;background:#35313d;transition:background-color 240ms}.week-segments .complete{background:#62bb89}
+#app[data-page=home] .home-grid{min-height:0;flex:0 1 auto;grid-template-rows:repeat(3,minmax(clamp(6rem,14dvh,7.375rem),auto));gap:10px}
+#app[data-page=home] .tile{min-height:0;padding:16px;border-radius:17px;background:#201f27;border:1px solid #ffffff0b;transition:background-color 240ms,border-color 240ms,transform 120ms;box-shadow:0 3px 10px #00000010}
+#app[data-page=home] .tile>span{width:28px;height:28px;color:#b9afc3}#app[data-page=home] .day-symbol{width:28px;height:28px}
+#app[data-page=home] .tile-bottom{width:100%;display:flex;align-items:baseline;justify-content:space-between;gap:6px}
+#app[data-page=home] .tile h2{font-size:1.25rem;letter-spacing:-.025em;margin:0;font-weight:550}
+#app[data-page=home] .tile small{font-size:0.6875rem;color:#aaa0b5}
+#app[data-page=home] .optional-tile{background:#2e2539;border-color:#72538655}#app[data-page=home] .optional-tile>span{color:#c1a2df}
+#app[data-page=home] .tile.complete{background:#193b2e;border-color:#51856870}#app[data-page=home] .tile.complete :is(span,small,h2){color:#a5ddbc}
+#app[data-page=home] .tile:active{transform:scale(.975);border-color:#ac91c4}
+.new-week-action{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:4px 12px;color:#bba3ce;font-size:0.75rem;border-radius:10px;flex-shrink:0}.new-week-action svg{height:16px;width:16px}
+#app[data-page=day][data-overview=true]{height:auto;min-height:0;max-width:560px;gap:12px;padding:12px 16px 16px}
+.overview-heading{display:flex;align-items:center;gap:10px;flex-shrink:0;margin:0!important;min-height:48px}
+.overview-heading>div{flex:1}.overview-heading h1{font-size:1.5625rem;letter-spacing:-.035em;margin:0;line-height:1.1}.overview-heading .eyebrow{margin-bottom:4px;font-size:0.6875rem}
+.overview-back,.overview-close{padding:10px;width:44px;min-height:44px;color:#b99fcf;border-radius:10px}.overview-heading svg{width:20px;height:20px}
+.day-exercise-list{display:flex;flex:0 1 auto;min-height:0;flex-direction:column;gap:7px}
+.overview-row{display:flex;align-items:center;gap:.75rem;flex:0 0 auto;min-height:3.375rem;padding:.5rem .75rem;text-align:left;background:#201f27;border:1px solid #ffffff0c;border-radius:12px;transition:background-color 240ms,border-color 240ms,transform 120ms}
+.exercise-number{font-size:0.6875rem;font-variant-numeric:tabular-nums;color:#8e8498;flex:0 0 18px}.overview-name{flex:1;min-width:0;font-size:0.875rem;font-weight:530;line-height:1.22;letter-spacing:-.01em}
+.overview-row svg{width:17px;height:17px;flex-shrink:0;color:#9d8caf}
+.overview-row.is-complete{background:#18372b;border-color:#4c795a66}.overview-row.is-complete .exercise-number{color:#80ab91}.overview-row.is-complete svg{color:#8dd5a8}
+.overview-row.is-complete:active{background:#224b38;border-color:#8dd5a8}
+.overview-row:active{transform:scale(.99);border-color:#b99fcf}
+.continue-workout{display:flex;align-items:center;justify-content:center;gap:10px;flex-shrink:0;min-height:44px;font-size:0.875rem;font-weight:550;color:#d3bee5;background:#35283f;border:1px solid #70518c66;border-radius:12px}
+.continue-workout svg{width:17px;height:17px}.continue-workout:active{background:#463252}
+#app:is([data-page=progress],[data-page=history],[data-page=backup]){padding-top:20px;max-width:560px}
+#app[data-page=progress] .screen-heading{margin:0 0 20px}
+.workout-selector{display:grid;grid-template-columns:repeat(5,1fr);padding:4px;gap:2px;background:#1c1b22;border:1px solid #ffffff08;border-radius:12px;margin-bottom:16px}
+.workout-selector button{min-height:44px;padding:6px 0;font-size:0.75rem;border-radius:8px;color:#aaa0b5;transition:background-color 240ms,color 240ms}.workout-selector [aria-pressed=true]{background:#3c2c4b;color:#e0c9f0}
+.report-surface{background:#1b1a22;border:1px solid #ffffff0a;border-radius:18px;padding:16px 10px 0;overflow:hidden}
+.report-heading{display:flex;justify-content:space-between;align-items:center;padding:0 5px}.report-heading h2{font-size:0.875rem;margin:0;font-weight:550}.report-heading>span{font-size:0.6875rem;color:#9b90a6}
+.chart-window{display:flex;align-items:center;justify-content:space-between;color:#897e96;font-size:0.6875rem;margin:2px 0}.chart-window button{color:#bda2d4;font-size:1.375rem;width:44px;min-height:44px;padding:0}.chart-window button:disabled{opacity:.25}
+.chart-stage{position:relative;min-height:190px}.weight-chart{width:100%;display:block;overflow:visible}
+.axis-value{fill:#aaa0b5;font-size:0.6875rem;font-variant-numeric:tabular-nums}.chart-grid{stroke:#ffffff0c;stroke-width:.7}
+.chart-line{stroke:var(--series);stroke-width:1.8;fill:none;stroke-linecap:butt;stroke-linejoin:miter;transition:stroke-width 240ms}
+.chart-series{transition:opacity 240ms;opacity:1}.chart-series.is-hidden{opacity:0;pointer-events:none}.chart-series.is-muted{opacity:.25}.chart-series.is-focused .chart-line{stroke-width:2.5}
+.chart-point{cursor:pointer;outline:none}.point-hit{fill:transparent;stroke:none}.point-dot{fill:var(--series);stroke:#1b1a22;stroke-width:1;transition:r 240ms,stroke-width 240ms}
+.chart-point:is(.is-selected,:focus-visible) .point-dot{r:5;stroke:#eee2fa;stroke-width:1.5}
+.chart-empty{position:absolute;inset:30% 10% auto 15%;text-align:center;font-size:0.75rem;color:#a498b2;background:#1b1a22dd;padding:12px;pointer-events:none}
+
+.point-detail{position:relative;min-height:76px;padding:12px 8px;display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-content:center;border-top:1px solid #ffffff0a}
+.detail-week{grid-column:1/-1;font-size:0.6875rem;color:#a899b5}.point-detail>strong{font-size:0.75rem;font-weight:550;line-height:1.3;align-self:center}.detail-value{font-size:1.0625rem;font-variant-numeric:tabular-nums;text-align:right;white-space:normal}.detail-value small{display:block;font-size:0.6875rem;color:#b9adc3}.detail-type{grid-column:1/-1;font-size:0.6875rem;color:#8e819a}.detail-placeholder{grid-column:1/-1;text-align:center;color:#9c8da9;font-size:0.6875rem}
+.filter-heading{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;margin:14px 0 2px;gap:8px}.filter-heading h2{font-size:0.875rem;margin:0}.filter-heading>div{display:flex;gap:12px}.filter-heading button{font-size:0.6875rem;min-height:44px;padding:4px 0;color:#bda2d4}
+.exercise-filter{display:flex;align-items:stretch;border-bottom:1px solid #ffffff08;min-height:48px}.exercise-filter>button:first-child{display:flex;align-items:center;gap:10px;flex:1;text-align:left;padding:7px 4px;font-size:0.75rem;line-height:1.3}
+.exercise-filter i{width:7px;height:7px;flex:0 0 7px;border-radius:50%;background:var(--series);transition:opacity 240ms}.exercise-filter span{flex:1}.exercise-filter small{display:block;color:#92849f;font-size:0.6875rem;margin-top:3px}
+.exercise-filter svg{width:14px;height:14px;fill:none;stroke:#c4a9db;stroke-width:1.5}.exercise-filter [aria-pressed=false]{color:#aaa0b5}.exercise-filter [aria-pressed=false] i{opacity:.25}.exercise-filter [aria-pressed=false] svg{opacity:0}
+.only-exercise{min-width:44px;padding:4px 0 4px 8px;font-size:0.6875rem;color:#a28bb7}.report-note{font-size:0.6875rem;line-height:1.5;color:#897d96;margin:16px 0}
+.earlier-records{font-size:0.75rem;color:#b3a7bd}.earlier-records summary{min-height:44px;cursor:pointer;padding:12px 0}.earlier-records p{font-size:0.6875rem}.earlier-row{padding:12px 0;border-bottom:1px solid #ffffff08;display:flex;flex-direction:column;gap:4px}.earlier-row strong{font-size:0.75rem;font-weight:550}.earlier-row span{font-size:0.6875rem;color:#9588a1}
+@keyframes dashboard-enter{from{opacity:0}to{opacity:1}}
+@keyframes line-reveal{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.chart-reveal{transform-box:fill-box;transform-origin:left center}
+@keyframes point-enter{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:no-preference){
+ #app[data-page=home][data-entrance=true] .tile{animation:dashboard-enter 260ms both;animation-delay:calc(var(--tile-order)*25ms)}
+ #app[data-overview=true][data-entrance=true] .day-exercise-list{animation:dashboard-enter 220ms both}
+ .chart-reveal{animation:line-reveal var(--draw-duration,620ms) linear both}
+ .point-dot{animation:point-enter 160ms both;animation-delay:var(--point-delay)}
+}
+@media(max-height:720px){#app[data-page=home]{gap:10px;padding-top:10px}#app[data-page=home] .tile{padding:12px}#app[data-page=home] .tile h2{font-size:1.125rem}.screen-heading h1{font-size:1.5625rem}.week-completion{padding:8px 12px}#app[data-page=day][data-overview=true]{gap:8px}.overview-row{gap:.5625rem;padding:.375rem .625rem;min-height:3rem}.overview-name{font-size:0.75rem}.day-exercise-list{gap:5px}.overview-heading h1{font-size:1.4375rem}}
+@media(max-height:560px){#app[data-page=home],#app[data-page=day][data-overview=true]{height:auto;min-height:0}.day-exercise-list{flex:none}.overview-row{min-height:48px}#app[data-page=home] .home-grid{grid-template-rows:repeat(3,minmax(6.25rem,auto))}}
+@media(prefers-reduced-motion:reduce){.chart-series,.chart-line,.point-dot,.overview-row,.app-footer button{transition:none}}
+@media(prefers-reduced-transparency:reduce){.app-footer{background:#16151c;backdrop-filter:none}}
+
+/* Apple Design audit: immediate press feedback, legible text and accessible alternatives. */
+body:has(.app-footer) #app{font-optical-sizing:auto;line-height:1.4}
+body:has(.app-footer) :is(.screen-heading,.overview-heading){min-width:0;flex-wrap:wrap}
+.screen-heading>div,.overview-heading>div{min-width:0}
+.overview-name,.exercise-filter span,.point-detail>strong{overflow-wrap:anywhere}
+.overview-name{letter-spacing:0}
+.app-footer{min-height:calc(var(--footer-height) + var(--shell-safe-bottom));height:auto}
+.app-footer button{min-height:3.25rem;line-height:1.25;overflow-wrap:anywhere}
+.app-footer svg{flex-shrink:0;display:block}
+.app-footer button{width:100%;align-self:center;min-width:0}
+.app-footer button span{display:block;text-align:center}
+body:has(.app-footer) :is(.screen-heading,.overview-heading) .eyebrow{color:#c1b9cb;font-weight:550;letter-spacing:.035em;opacity:1;text-shadow:none;filter:none}
+body:has(.app-footer) :is(button,summary){touch-action:manipulation}
+.new-week-action,.only-exercise{min-width:44px}
+.exercise-filter>button{min-height:44px;border-radius:8px}
+:is(.new-week-action,.overview-back,.overview-close,.workout-selector button,.chart-window button,.exercise-filter button,.filter-heading button,.app-footer button):active:not(:disabled){background:#352a42;transition-duration:0ms}
+:is(.continue-workout,.overview-row,.tile):active{transition-duration:0ms}
+.chart-point:active .point-dot{stroke:#eee2fa;stroke-width:2}
+.chart-point:focus-visible .point-hit{stroke:#eee2fa;stroke-width:1;stroke-dasharray:2 3}
+.chart-point:focus-visible .point-dot{animation:none}
+body:has(.app-footer) :is(button,summary):focus-visible{outline:2px solid #cdb5e2;outline-offset:2px}
+body:has(.app-footer) #app:is([data-page=history],[data-page=backup]) :is(p,button,select){font-size:.875rem}
+@media(prefers-contrast:more){
+ body:has(.app-footer) #app{color:#fff}
+ .app-footer button,.axis-value,.week-status,.exercise-number,.report-note,.chart-window,.detail-week,.detail-placeholder{color:#ded5e8;fill:#ded5e8}
+ #app[data-page=home] .tile,.overview-row,.report-surface,.workout-selector,.week-completion,.app-footer{border-color:#95869f}
+ #app[data-page=home] .tile.complete,.overview-row.is-complete{border-color:#a5ddbc}
+ .chart-grid{stroke:#8e819a;stroke-width:1}.chart-series.is-muted{opacity:.65}
+ .exercise-filter [aria-pressed=false]{color:#ded5e8}
+}
+
+/* Native scrolling supplies direct finger tracking, momentum and interruptible snapping. */
+.graph-deck{display:flex;align-items:flex-start;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none;position:relative;border-radius:18px;touch-action:pan-x pan-y}
+.graph-deck::-webkit-scrollbar{display:none}
+.graph-card{flex:0 0 100%;min-width:0;scroll-snap-align:start;padding-top:18px;--draw-duration:520ms}
+.graph-heading{display:flex;align-items:flex-start;gap:12px;padding:0 6px 6px}
+.graph-heading>div{flex:1;min-width:0}.graph-heading h2{font-size:1.125rem;font-weight:600;line-height:1.3;letter-spacing:-.015em;overflow-wrap:anywhere}
+.graph-heading .eyebrow{font-size:.6875rem;margin:0 0 6px}.graph-unit{font-size:.8125rem;color:#bca7cd;padding-top:24px}
+.graph-card .earlier-records{padding:0 8px}.graph-unit-options label{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 8px;font-size:.75rem;color:#b5adbd}
+.graph-unit-options select{width:auto;max-width:65%;font-size:.75rem;min-height:44px;padding:8px;margin:0}
+.graph-card:not(.is-current) .chart-reveal,.graph-card:not(.is-current) .point-dot{animation:none}
+.graph-pager{display:flex;justify-content:center;align-items:center;gap:16px;padding:8px 0}
+.graph-pager button{min-width:44px;min-height:44px;padding:10px;color:#c1a2df;border-radius:10px}
+.graph-pager svg{display:block;width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.graph-position{min-width:48px;text-align:center;font-size:.75rem;color:#b5adbd;font-variant-numeric:tabular-nums}
+.graph-pager button:active:not(:disabled){background:#352a42}.graph-pager button:disabled{cursor:default}
+.graph-deck:focus-visible{outline:2px solid #cdb5e2;outline-offset:2px}
+
+/* Axis meanings stay outside SVG scaling, including enlarged system text. */
+.chart-axis-title{font-size:.75rem;line-height:1.4;color:#c1b9cb;font-weight:500}
+.chart-weight-title{padding:0 6px 12px}
+.chart-week-title{text-align:center;padding:8px 6px 14px}
+
+/* Screen-sized reporting: every slide shares one grid, regardless of weight range. */
+body:has(.app-footer) #app[data-page=progress]{display:flex;flex-direction:column;gap:10px;padding:14px 16px 8px;overflow-y:hidden}
+#app[data-page=progress] .screen-heading{flex:none;margin:0}
+#app[data-page=progress] .screen-heading h1{font-size:1.625rem}
+#app[data-page=progress] .screen-heading .eyebrow{margin-bottom:4px}
+#progress-report{display:flex;flex:1;min-height:0;flex-direction:column;gap:8px}
+#progress-report .workout-selector{flex:none;margin:0}
+.graph-deck{flex:1;min-height:0;align-items:stretch;overflow-y:hidden}
+.graph-card{height:100%;display:grid;grid-template-rows:64px 44px 44px minmax(100px,1fr) 28px 66px 44px;padding:12px 10px 0;overflow:hidden}
+.graph-heading{padding:0 6px;min-height:0;align-items:center}
+.graph-heading h2{font-size:1rem;line-height:1.2}
+.graph-heading .eyebrow{font-size:.625rem;margin-bottom:4px}
+.graph-unit{padding:0;font-size:.75rem}
+.graph-card .chart-window{margin:0}
+.graph-card .chart-window button{min-height:40px}
+.graph-unit-options label{font-size:.6875rem;height:44px}
+.graph-unit-options select{min-height:40px;font-size:.6875rem;padding:4px}
+.graph-card .chart-stage{min-height:0;height:100%;overflow:visible}
+.graph-card .weight-chart{width:100%;height:100%}
+.chart-weight-title{padding:4px 6px 0;font-size:.6875rem}
+.chart-week-title{padding:4px 0;font-size:.6875rem}
+.graph-card .point-detail{min-height:0;height:100%;padding:6px;gap:2px 8px}
+.graph-card .point-detail>strong{font-size:.6875rem}.graph-card .detail-value{font-size:.9375rem}
+.graph-card .earlier-records{padding:0;text-align:center}
+.earlier-result{min-height:32px;padding:2px 6px;font-size:.625rem;color:#baa3d1}
+.graph-pager{flex:none;padding:0;min-height:44px}
+/* Keep the same geometry whether or not a series has old-unit or undated records. */
+@media(max-height:760px){.graph-card{grid-template-rows:54px 44px 44px minmax(80px,1fr) 24px 58px 44px;padding-top:8px}.graph-heading h2{font-size:.875rem}.graph-card .chart-window button{min-height:36px}.graph-card .point-detail{padding:4px}.earlier-result{min-height:28px}}
+/* Enlarged text and landscape remain reachable rather than being clipped. */
+@media(max-height:600px){body:has(.app-footer) #app[data-page=progress]{overflow-y:auto}#progress-report{flex:none;height:570px}}
+html[data-large-type=true] body:has(.app-footer) #app[data-page=progress]{overflow-y:auto}
+html[data-large-type=true] #progress-report{flex:none;height:900px}
+html[data-large-type=true] .graph-card{grid-template-rows:110px 64px 70px minmax(140px,1fr) 48px 120px 48px}
+html[data-large-type=true] .graph-heading h2{font-size:1rem}
+/* Secondary screens use sections and result pages instead of a long document. */
+body:has(.app-footer) #app:is([data-page=history],[data-page=backup]){display:flex;flex-direction:column;gap:12px;padding:16px 16px 12px;overflow-y:hidden}
+#app:is([data-page=history],[data-page=backup])>.back{display:none}
+#app:is([data-page=history],[data-page=backup])>header{margin:0;flex:none;min-height:42px}
+#app:is([data-page=history],[data-page=backup]) h1{font-size:1.625rem;letter-spacing:-.035em}
+#app:is([data-page=history],[data-page=backup])>[hidden],#app:is([data-page=history],[data-page=backup]) .panel [hidden]{display:none!important}
+.section-controls{display:flex;gap:8px;flex:none;min-width:0}
+.section-controls select{margin:0;min-width:0;min-height:44px;padding:8px;font-size:.8125rem;flex:1}
+#app:is([data-page=history],[data-page=backup])>.panel{flex:1;min-height:0;margin:0;padding:14px;overflow-y:auto;overscroll-behavior:contain}
+#app:is([data-page=history],[data-page=backup]) .panel h2{font-size:1.125rem;line-height:1.3}
+body:has(.app-footer) #app:is([data-page=history],[data-page=backup]) .panel p{font-size:.8125rem;line-height:1.4;margin:9px 0}
+#app[data-page=backup] .panel label{font-size:.8125rem}
+#app[data-page=backup] .panel input{width:100%;min-height:44px;max-width:100%;background:#17141c;border:1px solid #52475d;border-radius:10px;padding:8px;margin-top:6px}
+#app[data-page=backup] .panel .actions{margin-top:10px;gap:8px}
+#app[data-page=backup] .panel :is(.primary,.outline){min-height:44px;padding:8px 10px;font-size:.8125rem}
+#app[data-page=backup] .panel .text-button{min-height:44px;padding:8px 0}
+#app[data-page=history] .panel .row{padding:12px 0;min-height:60px}
+#app[data-page=history] .row strong{font-size:.875rem;line-height:1.3}
+#app[data-page=history] .panel .row p{margin:5px 0 0;font-size:.75rem}
+.record-pager{display:flex;justify-content:center;align-items:center;gap:20px;flex:none;height:44px;font-size:.75rem;color:#b9a3ce}
+.record-pager button{height:44px;min-width:44px;font-size:1.5rem}
+html[data-large-type=true] #app[data-page=backup]>.panel{overflow-y:auto}
+@media(max-height:600px){body:has(.app-footer) #app:is([data-page=history],[data-page=backup]){overflow-y:auto}#app:is([data-page=history],[data-page=backup])>.panel{min-height:350px;flex:none}}
+
+.chart-axis-row{display:flex;align-items:center;justify-content:space-between;gap:6px;min-width:0}
+.chart-axis-row .chart-weight-title{padding:0 6px}
+.chart-axis-row .graph-unit-options label{font-size:0;padding:0}
+.chart-axis-row .graph-unit-options select{max-width:140px;min-height:44px;font-size:.6875rem}
+.graph-card .chart-window button,.graph-card .earlier-result{min-height:44px}
+
+/* Let the six tiles use the remaining height, while leaving headings below the iOS edge effect. */
+body:has(.app-footer) #app{padding-top:30px!important}
+#app[data-page=home] .home-grid{flex:1;grid-template-rows:repeat(3,minmax(80px,1fr))}
+#app[data-page=home] .tile{justify-content:space-between}
+/* Inline validation occupies existing label space, without shifting the card. */
+.required-hint{font-size:.625rem;font-weight:550;letter-spacing:0;color:#e4ba91;margin-left:8px;white-space:nowrap}
+.exercise-card .effort{position:relative}
+.effort>.required-hint{position:absolute;right:0;top:-14px;margin:0;line-height:12px}
+.needs-input:is(.weight-stepper,.rep-control){outline:1px solid #e4ba9166;outline-offset:3px;border-radius:10px}
+.effort.needs-input button{border-color:#e4ba9180}
+@media(max-height:720px){body:has(.app-footer) #app{padding-top:24px!important}}
+@media(max-height:600px){#app[data-page=home] .home-grid{flex:none;grid-template-rows:repeat(3,minmax(80px,auto))}}
+html[data-large-type=true] #app[data-page=home] .home-grid{flex:none;grid-template-rows:repeat(3,minmax(6rem,auto))}
+
+.chart-point.is-carried .point-dot{fill:var(--surface,#201f27);stroke:var(--series);stroke-width:1.5}
+.bodyweight-label{color:var(--muted);font-size:.875rem;text-align:center;padding:1.25rem 0}
+
+/* Nine sessions form one three-week cycle. Same tested PWA shell and safe areas. */
+#app[data-page=home] .home-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+#app[data-page=home] .tile{padding:12px 10px;border-radius:18px;min-width:0;gap:6px}
+#app[data-page=home] .tile h2{font-size:.9rem;line-height:1.2;letter-spacing:-.015em}
+#app[data-page=home] .tile .tile-bottom{display:block}
+#app[data-page=home] .tile small{font-size:.65rem;display:block;margin-top:6px}
+#app[data-page=home] .tile .day-symbol{width:26px;height:26px}
+.tile-context{font-size:.6rem;color:#b9adc5;line-height:1.3;white-space:nowrap}
+.tile.complete .tile-context{color:#b7dfc7}
+.week-segments{grid-template-columns:repeat(9,1fr)}
+.overview-heading h1{font-size:1.3rem}
+.workout-nav h1{font-size:1rem;line-height:1.2}
+.workout-status{font-size:.68rem}
+.rep-entry{padding:0 4px;min-height:44px;min-width:44px;background:none}
+.rep-entry output{pointer-events:none}
+.rep-stops{position:relative;min-height:22px;margin-left:8px;margin-right:8px}
+.rep-ticks{position:relative}
+.previous{white-space:normal;overflow-wrap:anywhere;font-size:.72rem;line-height:1.4}
+.programme-selector{display:flex;gap:8px;flex:none}
+.programme-selector label{font-size:.65rem;color:var(--muted);min-width:0}
+.programme-selector label:first-child{flex:0 0 105px}.programme-selector label:last-child{flex:1}
+.programme-selector select{font-size:.75rem;min-height:44px;padding:8px;width:100%;margin:3px 0 0}
+.graph-card .detail-value.imported-value{font-size:.65rem;line-height:1.3;overflow-wrap:anywhere}
+@media(max-height:740px){#app[data-page=home] .tile{padding:8px}.tile-context{font-size:.55rem}#app[data-page=home] .tile h2{font-size:.8rem}}
+
+#app[data-page=home] .tile>.tile-context{width:auto;height:auto;min-height:0;}
+
+#app[data-page=home] .tile>.tile-context{font-size:.6rem;line-height:1.3;letter-spacing:0;display:block;width:100%;text-align:left;white-space:normal;}
